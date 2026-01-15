@@ -1,0 +1,22 @@
+{
+  "name": "codeflextech/laravel-uploader",
+  "description": "Reusable Laravel uploader with DB tracking, polymorphic relations, S3 support & optimization",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "CodeFlexTech\\Uploader\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^8.1",
+    "intervention/image": "^2.7"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "CodeFlexTech\\Uploader\\UploadServiceProvider"
+      ]
+    }
+  }
+}
