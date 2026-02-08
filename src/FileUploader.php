@@ -16,8 +16,8 @@ class FileUploader
         array $options = []
     ): File {
 
-        $disk = $options['disk'] ?? config('uploader.disk');
-        $folder = $options['folder'] ?? 'uploads';
+        $disk = $options['disk'] ?? config('uploader.disk') ?? 'public';
+        $folder = $options['folder'] ?? config('uploader.folder') ?? 'uploads';
 
         $year = now()->year;
         $month = now()->format('m');
@@ -49,13 +49,23 @@ class FileUploader
             ]);
         }
 
+        $type = $options['type'] ?? config('uploader.type') ?? 'file';
+
+        if ($model && defined(get_class($model).'::FILE_TYPES')) {
+            $allowedTypes = $model::FILE_TYPES;
+            if (! in_array($type, $allowedTypes)) {
+                throw new \InvalidArgumentException("Invalid file type: {$type}. Allowed types: ".implode(', ', $allowedTypes));
+            }
+        }
+
         return File::create([
             'disk' => $disk,
             'path' => "{$path}/{$name}",
             'original_name' => $file->getClientOriginalName(),
+            'type' => $type,
             'mime_type' => $file->getMimeType(),
             'size' => $file->getSize(),
-            'fileable_id' => $model?->id,
+            'fileable_id' => $model?->getKey(),
             'fileable_type' => $model ? get_class($model) : null,
         ]);
     }

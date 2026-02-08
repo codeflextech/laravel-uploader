@@ -10,11 +10,17 @@ class File extends Model
         'disk',
         'path',
         'original_name',
+        'type',
         'mime_type',
         'size',
         'fileable_id',
         'fileable_type',
     ];
+
+    public function getUrlAttribute()
+    {
+        return \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->path);
+    }
 
     public function fileable()
     {
