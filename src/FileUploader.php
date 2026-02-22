@@ -51,13 +51,6 @@ class FileUploader
 
         $type = $options['type'] ?? config('uploader.type') ?? 'file';
 
-        if ($model && defined(get_class($model).'::FILE_TYPES')) {
-            $allowedTypes = $model::FILE_TYPES;
-            if (! in_array($type, $allowedTypes)) {
-                throw new \InvalidArgumentException("Invalid file type: {$type}. Allowed types: ".implode(', ', $allowedTypes));
-            }
-        }
-
         return File::create([
             'disk' => $disk,
             'path' => "{$path}/{$name}",

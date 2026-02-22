@@ -1,10 +1,17 @@
-<?php 
+<?php
 namespace CodeFlexTech\Uploader;
 
 use Illuminate\Support\ServiceProvider;
 
 class UploadServiceProvider extends ServiceProvider
 {
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/uploader.php', 'uploader'
+        );
+    }
+
     public function boot()
     {
         $this->publishes([

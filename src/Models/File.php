@@ -17,6 +17,11 @@ class File extends Model
         'fileable_type',
     ];
 
+    public function getTable()
+    {
+        return config('uploader.table_name', 'files');
+    }
+
     public function getUrlAttribute()
     {
         return \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->path);

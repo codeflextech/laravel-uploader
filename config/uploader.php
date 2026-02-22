@@ -2,6 +2,8 @@
 
 return [
 
+    'table_name' => env('UPLOAD_TABLE_NAME', 'files'),
+
     'disk' => env('UPLOAD_DISK', 'public'),
 
     'structure' => 'year/month/week',

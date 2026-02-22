@@ -23,6 +23,7 @@ php artisan vendor:publish --tag=uploader-config
 
 ### Key Config Options (`config/uploader.php`)
 
+*   **`table_name`**: The database table name (default: `files`). Can be set via `UPLOAD_TABLE_NAME` env var.
 *   **`disk`**: Default storage disk (e.g., `public`, `s3`).
 *   **`folder`**: Default folder name inside the disk (default: `uploads`).
 *   **`structure`**: Date structure for organized files (default: `year/month/week`).

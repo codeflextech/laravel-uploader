@@ -8,11 +8,14 @@ class CreateFilesTable extends Migration
 {
     public function up()
     {
-        Schema::create('files', function (Blueprint $table) {
+        $table_name = config('uploader.table_name', 'files');
+
+        Schema::create($table_name, function (Blueprint $table) {
             $table->id();
             $table->string('disk');
             $table->string('path');
             $table->string('original_name');
+            $table->string('type')->index();
             $table->string('mime_type')->nullable();
             $table->unsignedBigInteger('size')->nullable();
             $table->nullableMorphs('fileable');
@@ -23,6 +26,8 @@ class CreateFilesTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('files');
+        $table_name = config('uploader.table_name', 'files');
+
+        Schema::dropIfExists($table_name);
     }
 }
