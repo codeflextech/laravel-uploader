@@ -98,26 +98,7 @@ Pass the `type` in the options array. If omitted, it defaults to `'file'`.
 FileUploader::upload($file, $user, ['type' => 'resume']);
 ```
 
-### 2. Define Allowed Types (Validation)
-
-To restrict allowed types, define a `const FILE_TYPES` array in your model.
-
-```php
-class User extends Authenticatable
-{
-    use HasFiles;
-
-    const FILE_TYPES = [
-        'resume',
-        'profile_pic',
-        'contract'
-    ];
-}
-```
-
-*If you try to upload a type not in this list, an `InvalidArgumentException` will be thrown.*
-
-### 3. Retrieve Files by Type
+### 2. Retrieve Files by Type
 
 The `HasFiles` trait provides helper methods:
 
