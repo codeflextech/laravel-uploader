@@ -36,6 +36,7 @@ trait HasFiles
 
     /**
      * Upload a file and attach it to this model.
+     * Replaces any existing file of the same type.
      *
      * @param \Illuminate\Http\UploadedFile $file
      * @param array $options
@@ -43,6 +44,16 @@ trait HasFiles
      */
     public function upload($file, array $options = [])
     {
+        $type = $options['type'] ?? config('uploader.type', 'file');
+
+        // Delete existing file(s) of this type
+        $this->filesByType($type)->get()->each(function ($existingFile) {
+            \Illuminate\Support\Facades\Storage::disk($existingFile->disk)->delete($existingFile->path);
+            $existingFile->delete();
+        });
+
+        $options['type'] = $type;
+
         return \CodeFlexTech\Uploader\FileUploader::upload($file, $this, $options);
     }
 }

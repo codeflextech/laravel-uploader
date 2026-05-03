@@ -71,11 +71,6 @@ class User extends Authenticatable
 Use the `FileUploader` facade or class to handle uploads.
 
 ```php
-```php
-// Old way (still works)
-// FileUploader::upload($request->file('avatar'), $user, [...]);
-
-// New, cleaner way
 $user->upload(
     $request->file('avatar'),
     [
@@ -95,10 +90,15 @@ You can categorize uploads by `type` (e.g., 'resume', 'profile_pic').
 Pass the `type` in the options array. If omitted, it defaults to `'file'`.
 
 ```php
-FileUploader::upload($file, $user, ['type' => 'resume']);
+$user->upload($file, ['type' => 'resume']);
 ```
 
-### 2. Retrieve Files by Type
+### 2. Replacing Files
+
+By default, the `upload()` method enforces a 1-to-1 relationship per `type`. 
+If a user already has a `'profile_pic'` and uploads a new one, the old file will automatically be deleted from storage and the database before the new one is saved.
+
+### 3. Retrieve Files by Type
 
 The `HasFiles` trait provides helper methods:
 
