@@ -1,20 +1,39 @@
 <?php
-
+declare(strict_types = 1);
 namespace CodeFlexTech\Uploader;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
-use CodeFlexTech\Uploader\Models\File;
+use CodeFlexTech\Uploader\Models\Document;
 
-class FileUploader
+/**
+ * Class DocumentUploader
+ *
+ * @package   CodeFlexTech\Uploader
+ *
+ * @author    Faisal Shah <faisalshah4004@gmail.com>
+ *
+ * @copyright 2026 CodeFlexTech.com
+ * @version   1.0
+ */
+class DocumentUploader
 {
+    /**
+     * Function upload
+     *
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param                               $model
+     * @param array                         $options
+     *
+     * @return \CodeFlexTech\Uploader\Models\Document
+     */
     public static function upload(
         UploadedFile $file,
         $model = null,
         array $options = []
-    ): File {
+    ): Document {
 
         $disk = $options['disk'] ?? config('uploader.disk') ?? 'public';
         $folder = $options['folder'] ?? config('uploader.folder') ?? 'uploads';
@@ -51,15 +70,15 @@ class FileUploader
 
         $type = $options['type'] ?? config('uploader.type') ?? 'file';
 
-        return File::create([
+        return Document::create([
             'disk' => $disk,
             'path' => "{$path}/{$name}",
             'original_name' => $file->getClientOriginalName(),
             'type' => $type,
             'mime_type' => $file->getMimeType(),
             'size' => $file->getSize(),
-            'fileable_id' => $model?->getKey(),
-            'fileable_type' => $model ? get_class($model) : null,
+            'documentable_id' => $model?->getKey(),
+            'documentable_type' => $model ? get_class($model) : null,
         ]);
     }
 }

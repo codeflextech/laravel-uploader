@@ -1,12 +1,12 @@
 # CodeFlexTech Laravel Uploader
 
-A production-ready Laravel file uploader with:
+A production-ready Laravel document uploader with:
 - Polymorphic relations
-- Public & private files
+- Public & private Documents
 - Local / S3 support
 - Image optimization
 - Auto cleanup on model delete
-- **Multiple File Types Support** 
+- **Multiple document Types Support** 
 
 ## Installation
 
@@ -23,16 +23,16 @@ php artisan vendor:publish --tag=uploader-config
 
 ### Key Config Options (`config/uploader.php`)
 
-*   **`table_name`**: The database table name (default: `files`). Can be set via `UPLOAD_TABLE_NAME` env var.
+*   **`table_name`**: The database table name (default: `documents`). Can be set via `UPLOAD_TABLE_NAME` env var.
 *   **`disk`**: Default storage disk (e.g., `public`, `s3`).
 *   **`folder`**: Default folder name inside the disk (default: `uploads`).
-*   **`structure`**: Date structure for organized files (default: `year/month/week`).
-*   **`visibility`**: File visibility (`public` or `private`).
+*   **`structure`**: Date structure for organized Documents (default: `year/month/week`).
+*   **`visibility`**: documents visibility (`public` or `private`).
 *   **`optimize_images`**: Auto-resize images (boolean).
 
 ## Direct Public Uploads
 
-By default, files are stored in `storage/app/public` and symlinked. If you want to upload **directly** to the `public/` folder (bypassing `storage/`), you can define a custom disk.
+By default, Documents are stored in `storage/app/public` and symlinked. If you want to upload **directly** to the `public/` folder (bypassing `storage/`), you can define a custom disk.
 
 1.  Add to `config/filesystems.php`:
 
@@ -48,27 +48,27 @@ By default, files are stored in `storage/app/public` and symlinked. If you want 
 2.  Use it in your upload:
 
     ```php
-    $user->upload($file, ['disk' => 'public_uploads']);
+    $user->upload($document, ['disk' => 'public_uploads']);
     ```
 
 ## Basic Usage
 
 ### 1. Add Trait to Model
 
-Add the `HasFiles` trait to any model that should have files attached (e.g., User, Post, Product).
+Add the `HasDocuments` trait to any model that should have Documents attached (e.g., User, Post, Product).
 
 ```php
-use CodeFlexTech\Uploader\Traits\HasFiles;
+use CodeFlexTech\Uploader\Traits\HasDocuments;
 
 class User extends Authenticatable
 {
-    use HasFiles;
+    use HasDocuments;
 }
 ```
 
-### 2. Upload a File
+### 2. Upload a Document
 
-Use the `FileUploader` facade or class to handle uploads.
+Use the `DocumentUploader` facade or class to handle uploads.
 
 ```php
 $user->upload(
@@ -81,30 +81,30 @@ $user->upload(
 );
 ```
 
-## Advanced Usage: File Types & Validation
+## Advanced Usage: Document Types & Validation
 
 You can categorize uploads by `type` (e.g., 'resume', 'profile_pic').
 
 ### 1. Upload with Type
 
-Pass the `type` in the options array. If omitted, it defaults to `'file'`.
+Pass the `type` in the options array. If omitted, it defaults to `'document'`.
 
 ```php
-$user->upload($file, ['type' => 'resume']);
+$user->upload($document, ['type' => 'resume']);
 ```
 
-### 2. Replacing Files
+### 2. Replacing Documents
 
 By default, the `upload()` method enforces a 1-to-1 relationship per `type`. 
-If a user already has a `'profile_pic'` and uploads a new one, the old file will automatically be deleted from storage and the database before the new one is saved.
+If a user already has a `'profile_pic'` and uploads a new one, the old document will automatically be deleted from storage and the database before the new one is saved.
 
-### 3. Retrieve Files by Type
+### 3. Retrieve Documents by Type
 
-The `HasFiles` trait provides helper methods:
+The `HasDocuments` trait provides helper methods:
 
 ```php
 // Get all resumes
-$resumes = $user->filesByType('resume')->get();
+$resumes = $user->documentsByType('resume')->get();
 
 // Get the latest profile picture
 $pic = $user->latestFile('profile_pic');

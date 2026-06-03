@@ -1,8 +1,9 @@
 <?php
+declare(strict_types = 1);
 
 return [
 
-    'table_name' => env('UPLOAD_TABLE_NAME', 'files'),
+    'table_name' => env('UPLOAD_TABLE_NAME', 'documents'),
 
     'disk' => env('UPLOAD_DISK', 'public'),
 
